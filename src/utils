@@ -72,7 +72,15 @@ process_command(){
   [ "${COMMAND_PATH}" == "${FOR_THIS_FILE}" ] && COMMAND_PATH=${COMMAND_PATH}_default
   # we found a command, are they asking for help?
   if [ "${COMMAND_NAME}" == "help" ]; then
-    show_help "${COMMAND_PATH}"
+    # if we've asked for help on the default command
+    if [ "${COMMAND_PATH}" == "${FOR_THIS_FILE}_default" ]; then
+      # and we have a help specific command
+      if [ -x "${FOR_THIS_FILE}_help" ]; then
+         ${FOR_THIS_FILE}_help "$@"
+      fi
+    else
+      show_help "${COMMAND_PATH}"
+    fi
     exit -1
   fi
   debug "running command ${COMMAND_PATH}"
