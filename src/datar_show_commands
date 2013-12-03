@@ -1,0 +1,17 @@
+#! /usr/bin/env bash
+# vim: ft=sh
+
+MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+if [ -z "${UTILS_IMPORTED}" ]; then
+  source ${MY_DIR}/utils
+fi
+
+for command in ${MY_DIR}/datar_*
+do
+  COMMAND_NAME=$(basename ${command})
+  case ${COMMAND_NAME} in
+    datar_help | datar_default | datar_show_commands ) ;;
+    * ) echo ${COMMAND_NAME} | sed -e "s[datar_[[g" | sed -e "s[_[ [g" ;;
+  esac
+done
+
