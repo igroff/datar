@@ -1,0 +1,12 @@
+#! /usr/bin/env bash
+# vim: ft=sh
+
+MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+if [ -z "${UTILS_IMPORTED}" ]; then
+  source ${MY_DIR}/utils
+fi
+
+export APPLICATION_ROOT=${MY_DIR}
+export EXECUTION_ID=$(date +"%s")
+
+process_command ${BASH_SOURCE[0]} "$@"
