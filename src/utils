@@ -18,6 +18,12 @@ write_log(){
 }
 export -f write_log
 
+hash_file(){
+  THIS_FILE=$1
+  openssl md5 ${THIS_FILE} | sed -e 's[MD5.* [[g'
+}
+export -f hash_file
+
 log_divider() { write_log "******************************************"; }
 export -f log_divider
 
