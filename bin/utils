@@ -51,6 +51,7 @@ export -f show_help
 
 process_command(){
   local FOR_THIS_FILE=$1
+  debug "processing commands for ${FOR_THIS_FILE}"
   # our default command will be based on the script we're operating on
   local COMMAND_PATH=${FOR_THIS_FILE}
   local COMMAND_DIR=`dirname ${FOR_THIS_FILE}`
@@ -66,8 +67,10 @@ process_command(){
   do
     # if we don't already have a path to test, we'll use the original
     local TEST_COMMAND=${TEST_COMMAND:-${COMMAND_PATH}}_${part}
+    debug "checking for command at ${TEST_COMMAND}"
     # if we find an executable at the path, that's our new command
     if [ -x "${TEST_COMMAND}" ]; then
+      debug "found executable command: ${TEST_COMMAND}"
       shift
       COMMAND_PATH=${TEST_COMMAND}
     else

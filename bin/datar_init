@@ -17,3 +17,4 @@ fi
 
 echo "running ${BASH_SOURCE[0]} $@"
 
+mkdir -p ${INDEX_DIR}

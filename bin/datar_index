@@ -12,5 +12,4 @@ if [ -z "${UTILS_IMPORTED}" ]; then
   source ${MY_DIR}/utils
 fi
 
-echo "running ${BASH_SOURCE[0]} $@"
-
+index

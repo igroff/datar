@@ -2,18 +2,27 @@
 # vim: ft=sh
 
 MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+MY_NAME=`basename ${BASH_SOURCE[0]}`
 if [ -z "${UTILS_IMPORTED}" ]; then
   source ${MY_DIR}/utils
 fi
 
+is_dir_or_die(){
+  [ -n "${SKIP_VALIDATE}" ] && return 0
+  [ ! -d "${1}" ] && die "$2" $3
+}
+
 compute_and_validate_paths(){
-  [ ! -d "${DATA_DIR}" ] && die "Inavlid data directory: ${DATA_DIR}" 100
+  #[ ! -d "${DATA_DIR}" ] && die "Inavlid data directory: ${DATA_DIR}" 100
+  is_dir_or_die "${DATA_DIR}" "Invalid data directory: ${DATA_DIR}" 100
   export INDEX_DIR=${INDEX_DIR-${DATA_DIR}/index}
-  [ ! -d "${INDEX_DIR}" ] && die "Inavlid index directory: ${INDEX_DIR}" 101
+  #[ ! -d "${INDEX_DIR}" ] && die "Inavlid index directory: ${INDEX_DIR}" 101
+  is_dir_or_die "${INDEX_DIR}" "Invalid index directory: ${INDEX_DIR}" 101
 }
 
 export DATA_DIR=${DATA_DIR-~/.datar}
 
+[ "${1,,}" == "init" ] && SKIP_VALIDATE=true
 # get our configuration set up, after we set up our defaults so that they 
 # can be overridden if needed
 source_rc_file datar
@@ -21,5 +30,7 @@ compute_and_validate_paths
 
 export APPLICATION_ROOT=${MY_DIR}
 export EXECUTION_ID=$(date +"%s")
+#export PYTHONPATH=${MY_DIR}/lib:${PYTHOPATH}
+#export PATH=../src:${PATH}
 
-process_command ${BASH_SOURCE[0]} "$@"
+process_command ${MY_DIR}/${MY_NAME} "$@"
