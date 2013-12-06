@@ -39,6 +39,9 @@ export -f info
 debug() { [ -n "${DEBUG}" ] && write_log "DEBUG" $@; }
 export -f debug
 
+die() { echo $1 ; exit ${2-10000} ;}
+export -f die
+
 show_help(){
   FROM_THIS_FILE=$1
   debug "Showing help from ${FROM_THIS_FILE}"
@@ -107,6 +110,23 @@ bail_on_error(){
   fi
 }
 export -f bail_on_error
+
+source_rc_file(){
+  APP_NAME=$1
+  until [ `pwd` == "/" ]
+  do
+    [ -f ".${APP_NAME}" ] && RC_FILE=`pwd`/.${APP_NAME} && break
+    cd .. > /dev/null 2>&1
+  done
+  [ -f "${RC_FILE}" ] && source ${RC_FILE} && return 0
+
+  RC_FILE=~/.${APP_NAME}
+  [ -f "${RC_FILE}" ] && source ${RC_FILE} && return 0
+  RC_FILE=~/.${APP_NAME}/config
+  [ -f "${RC_FILE}" ] && source ${RC_FILE} && return 0
+  return 100
+}
+export -f source_rc_file
 
 export UTILS_IMPORTED=1
 debug "utils imported"

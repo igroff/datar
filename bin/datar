@@ -6,6 +6,19 @@ if [ -z "${UTILS_IMPORTED}" ]; then
   source ${MY_DIR}/utils
 fi
 
+compute_and_validate_paths(){
+  [ ! -d "${DATA_DIR}" ] && die "Inavlid data directory: ${DATA_DIR}" 100
+  export INDEX_DIR=${INDEX_DIR-${DATA_DIR}/index}
+  [ ! -d "${INDEX_DIR}" ] && die "Inavlid index directory: ${INDEX_DIR}" 101
+}
+
+export DATA_DIR=${DATA_DIR-~/.datar}
+
+# get our configuration set up, after we set up our defaults so that they 
+# can be overridden if needed
+source_rc_file datar
+compute_and_validate_paths
+
 export APPLICATION_ROOT=${MY_DIR}
 export EXECUTION_ID=$(date +"%s")
 
