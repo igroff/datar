@@ -116,11 +116,13 @@ export -f bail_on_error
 
 source_rc_file(){
   APP_NAME=$1
+  RC_FILE=$(
   until [ `pwd` == "/" ]
   do
-    [ -f ".${APP_NAME}" ] && RC_FILE=`pwd`/.${APP_NAME} && break
+    [ -f ".${APP_NAME}" ] && echo `pwd`/.${APP_NAME} && break
     cd .. > /dev/null 2>&1
   done
+  )
   [ -f "${RC_FILE}" ] && source ${RC_FILE} && return 0
 
   RC_FILE=~/.${APP_NAME}
