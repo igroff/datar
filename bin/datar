@@ -8,21 +8,26 @@ if [ -z "${UTILS_IMPORTED}" ]; then
 fi
 
 is_dir_or_die(){
-  [ -n "${SKIP_VALIDATE}" ] && return 0
+  [ -n "${SKIP_VALIDATE}" ] && return 0 && break
   [ ! -d "${1}" ] && die "$2" $3
 }
+export -f is_dir_or_die
+
+reset_computed_paths(){
+  unset INDEX_DIR
+}
+export -f reset_computed_paths
 
 compute_and_validate_paths(){
-  #[ ! -d "${DATA_DIR}" ] && die "Inavlid data directory: ${DATA_DIR}" 100
   is_dir_or_die "${DATA_DIR}" "Invalid data directory: ${DATA_DIR}" 100
   export INDEX_DIR=${INDEX_DIR-${DATA_DIR}/index}
-  #[ ! -d "${INDEX_DIR}" ] && die "Inavlid index directory: ${INDEX_DIR}" 101
   is_dir_or_die "${INDEX_DIR}" "Invalid index directory: ${INDEX_DIR}" 101
 }
+export -f compute_and_validate_paths
 
 export DATA_DIR=${DATA_DIR-~/.datar}
 
-[ "${1,,}" == "init" ] && SKIP_VALIDATE=true
+[ "${1,,}" == "init" ] && export SKIP_VALIDATE=true
 # get our configuration set up, after we set up our defaults so that they 
 # can be overridden if needed
 source_rc_file datar

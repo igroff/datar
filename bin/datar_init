@@ -15,6 +15,14 @@ if [ -z "${UTILS_IMPORTED}" ]; then
   source ${MY_DIR}/utils
 fi
 
-echo "running ${BASH_SOURCE[0]} $@"
+DATA_DIR=${1?You must provide a directory to be initialized}
+DATA_DIR_ABSOLUTE=$(cd ${DATA_DIR} && pwd)
+DATA_DIR=${DATA_DIR_ABSOLUTE}/datar
+reset_computed_paths
+compute_and_validate_paths
 
-mkdir -p ${INDEX_DIR}
+echo "Initializing datar directory ${DATA_DIR}"
+echo "DATA_DIR : ${DATA_DIR}"
+echo "INDEX_DIR: ${INDEX_DIR}"
+
+#mkdir -p ${INDEX_DIR}
