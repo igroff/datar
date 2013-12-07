@@ -119,16 +119,16 @@ source_rc_file(){
   RC_FILE=$(
   until [ `pwd` == "/" ]
   do
-    [ -f ".${APP_NAME}" ] && echo `pwd`/.${APP_NAME}rc && break
+    [ -f ".${APP_NAME}rc" ] && echo `pwd`/.${APP_NAME}rc && break
     cd .. > /dev/null 2>&1
   done
   )
-  [ -f "${RC_FILE}" ] && source ${RC_FILE} && return 0
+  [ -f "${RC_FILE}" ] && export RC_FILE && source ${RC_FILE} && return 0
 
   RC_FILE=~/.${APP_NAME}rc
-  [ -f "${RC_FILE}" ] && source ${RC_FILE} && return 0
+  [ -f "${RC_FILE}" ] && export RC_FILE && source ${RC_FILE} && return 0
   RC_FILE=~/.${APP_NAME}/config
-  [ -f "${RC_FILE}" ] && source ${RC_FILE} && return 0
+  [ -f "${RC_FILE}" ] && export RC_FILE && source ${RC_FILE} && return 0
   return 100
 }
 export -f source_rc_file

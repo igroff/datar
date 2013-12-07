@@ -31,6 +31,7 @@ export DATA_DIR=${DATA_DIR-~/.datar}
 # get our configuration set up, after we set up our defaults so that they 
 # can be overridden if needed
 source_rc_file datar
+debug "RC_FILE: ${RC_FILE}"
 compute_and_validate_paths
 
 export APPLICATION_ROOT=${MY_DIR}
